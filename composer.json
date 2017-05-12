@@ -1,0 +1,25 @@
+{
+    "name": "adagio/data-store",
+    "description": "Flexible data store.",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Keven",
+            "email": "keven@adagiolabs.fr"
+        }
+    ],    
+    "autoload": {
+        "psr-4": {
+            "Adagio\\DataStore\\": "src"
+        }
+    },
+    "require": {
+        "php": "^5.5 | ^7.0",
+        "adagio/rad": "^0.1.0",
+        "jamesmoss/flywheel": "^0.5.2"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^6.1"
+    }
+}
