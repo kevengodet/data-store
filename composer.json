@@ -17,7 +17,9 @@
     "require": {
         "php": "^5.5 | ^7.0",
         "adagio/rad": "^0.1.0",
-        "jamesmoss/flywheel": "^0.5.2"
+        "jamesmoss/flywheel": "^0.5.2",
+        "doctrine/dbal": "^2.5",
+        "psr/log": "^1.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^6.1"
