@@ -67,6 +67,10 @@ final class FlywheelStore implements DataStore
      */
     public function remove($identifier)
     {
+        if (!$this->has($identifier)) {
+            return;
+        }
+
         $this->repository->delete($identifier);
     }
 

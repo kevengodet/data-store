@@ -188,6 +188,10 @@ final class DbalStore implements DataStore
      */
     public function remove($identifier)
     {
+        if (!$this->has($identifier)) {
+            return;
+        }
+
         $this->connection->delete($this->tableName, ['id' => $identifier]);
     }
 

@@ -48,6 +48,10 @@ final class ArrayStore implements DataStore
      */
     public function remove($identifier)
     {
+        if (!$this->has($identifier)) {
+            return;
+        }
+
         unset($this->entries[$identifier]);
     }
 
