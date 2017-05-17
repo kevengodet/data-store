@@ -20,6 +20,17 @@ abstract class AbstractStoreTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(['baz2' => ['foo' => 'bar1'], 'baz1' => ['foo' => 'bar1']], $this->store->findBy('foo', 'bar1'), '', 0.0, 10, true);
 
         $this->assertEquals(['foo' => 'bar3'], $this->store->findOneBy('foo', 'bar3'));
+
+        $this->assertEquals(
+                [
+                    'baz1' => ['foo' => 'bar1'],
+                    'baz2' => ['foo' => 'bar1'],
+                    'baz3' => ['foo' => 'bar2'],
+                    'baz4' => ['foo' => 'bar2'],
+                    'baz5' => ['foo' => 'bar3'],
+                ],
+                $this->store->findAll(), '', 0.0, 10, true
+        );
     }
 
     /**

@@ -61,4 +61,10 @@ interface DataStore
      * @throws NotFound
      */
     public function findOneBy($property, $value, $comparator = '=');
+
+    /**
+     *
+     * @return object[]
+     */
+    public function findAll();
 }

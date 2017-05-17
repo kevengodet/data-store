@@ -119,6 +119,15 @@ final class ArrayStore implements DataStore
 
     /**
      *
+     * @return object[]
+     */
+    public function findAll()
+    {
+        return $this->entries;
+    }
+
+    /**
+     *
      * @param array $entry
      * @param string $property
      * @param string $comparator

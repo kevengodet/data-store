@@ -105,7 +105,7 @@ final class FlywheelStore implements DataStore
         foreach ($this->repository
                 ->query()
                 ->where($property, $comparator, $value)
-                ->execute() as $key => $entry) {
+                ->execute() as $entry) {
             $entries[$entry->getId()] = get_object_vars($entry);
         }
 
@@ -140,5 +140,19 @@ final class FlywheelStore implements DataStore
         }
 
         return get_object_vars($result->first());
+    }
+
+    /**
+     *
+     * @return object[]
+     */
+    public function findAll()
+    {
+        $entries = [];
+        foreach ($this->repository->findAll() as $entry) {
+            $entries[$entry->getId()] = get_object_vars($entry);
+        }
+
+        return $entries;
     }
 }

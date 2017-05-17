@@ -268,4 +268,25 @@ final class DbalStore implements DataStore
 
         return reset($results);
     }
+
+    /**
+     *
+     * @return object[]
+     */
+    public function findAll()
+    {
+        $queryBuilder = $this->connection
+            ->createQueryBuilder()
+            ->select('id', 'data')
+            ->from($this->tableName);
+
+        $results = $this->connection->fetchAll($queryBuilder->getSQL());
+
+        $entities = [];
+        foreach ($results as $row) {
+            $entities[$row['id']] = json_decode($row['data'], true);
+        }
+
+        return $entities;
+    }
 }
