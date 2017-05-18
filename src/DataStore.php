@@ -41,13 +41,13 @@ interface DataStore
 
     /**
      *
-     * @param string $property
+     * @param string|array $property
      * @param mixed $value
      * @param string $comparator
      *
      * @return array
      */
-    public function findBy($property, $value, $comparator = '=');
+    public function findBy($property, $value = null, $comparator = '=');
 
 
     /**
@@ -60,7 +60,7 @@ interface DataStore
      *
      * @throws NotFound
      */
-    public function findOneBy($property, $value, $comparator = '=');
+    public function findOneBy($property, $value = null, $comparator = '=');
 
     /**
      *

@@ -230,17 +230,31 @@ final class DbalStore implements DataStore
      */
     public function findBy($property, $value, $comparator = '=')
     {
-        if ($comparator != '=') {
-            throw new \InvalidArgumentException('Only = operator implemented in '.__METHOD__.' at the moment.');
+        $properties = is_array($property) ?
+                $property :
+                [[ $property, $value, $comparator ]];
+
+        $criteria = [];
+        foreach ($properties as $criterion) {
+            if (!isset($criterion['comparator'])) {
+                $criterion['comparator'] = '=';
+            }
+
+            if ($comparator != '=') {
+                throw new \InvalidArgumentException('Only = operator implemented in '.__METHOD__.' at the moment.');
+            }
+
+            list($propertyName, $value) = $criterion;
+            $criteria[$propertyName] = $value;
         }
 
-        $queryBuilder = $this->connection
+       $queryBuilder = $this->connection
             ->createQueryBuilder()
             ->select('id', 'data')
             ->from($this->tableName)
             ->where('data::jsonb @> :json');
 
-        $results = $this->connection->fetchAll($queryBuilder->getSQL(), [':json' => json_encode([$property => $value])]);
+        $results = $this->connection->fetchAll($queryBuilder->getSQL(), [':json' => json_encode($criteria)]);
 
         $entities = [];
         foreach ($results as $row) {
@@ -261,7 +275,7 @@ final class DbalStore implements DataStore
      *
      * @throws NotFound
      */
-    public function findOneBy($property, $value, $comparator = '=')
+    public function findOneBy($property, $value = null, $comparator = '=')
     {
         $results = $this->findBy($property, $value, $comparator);
 

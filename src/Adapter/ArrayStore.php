@@ -80,16 +80,26 @@ final class ArrayStore implements DataStore
      *
      * @return array
      */
-    public function findBy($property, $value, $comparator = '=')
+    public function findBy($property, $value = null, $comparator = '=')
     {
-        if ($comparator === '=') {
-            $comparator = '==';
-        }
+        $properties = is_array($property) ?
+                $property :
+                [[ $property, $value, $comparator ]];
 
         $entries = [];
         foreach ($this->entries as $identifier => $entry) {
-            if ($this->matches($entry, $property, $comparator, $value)) {
-                $entries[$identifier] = $entry;
+            foreach ($properties as $criterion) {
+                @list($propertyName, $value, $comparator) = $criterion;
+
+                if (!$comparator) {
+                    $comparator = '==';
+                } elseif ($comparator === '=') {
+                    $comparator = '==';
+                }
+
+                if ($this->matches($entry, $propertyName, $comparator, $value)) {
+                    $entries[$identifier] = $entry;
+                }
             }
         }
 
@@ -106,14 +116,34 @@ final class ArrayStore implements DataStore
      *
      * @throws NotFound
      */
-    public function findOneBy($property, $value, $comparator = '=')
+    public function findOneBy($property, $value = null, $comparator = '=')
     {
         if ($comparator === '=') {
             $comparator = '==';
         }
 
+        $properties = is_array($property) ?
+                $property :
+                [[ $property, $value, $comparator ]];
+
         foreach ($this->entries as $entry) {
-            if ($this->matches($entry, $property, $comparator, $value)) {
+            $matches = true;
+            foreach ($properties as $criterion) {
+                @list($propertyName, $value, $comparator) = $criterion;
+
+                if (!$comparator) {
+                    $comparator = '==';
+                } elseif ($comparator === '=') {
+                    $comparator = '==';
+                }
+
+                if (!$this->matches($entry, $propertyName, $comparator, $value)) {
+                    $matches = false;
+                    continue;
+                }
+            }
+
+            if ($matches) {
                 return $entry;
             }
         }

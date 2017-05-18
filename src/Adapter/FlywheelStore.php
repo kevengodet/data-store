@@ -99,17 +99,27 @@ final class FlywheelStore implements DataStore
      *
      * @return array
      */
-    public function findBy($property, $value, $comparator = '=')
+    public function findBy($property, $value = null, $comparator = '=')
     {
-        if ('=' === $comparator) {
-            $comparator = '==';
+        $properties = is_array($property) ?
+                $property :
+                [[ $property, $value, $comparator ]];
+
+        $query = $this->repository->query();
+        foreach ($properties as $property) {
+            list($propertyName, $value, $comparator) = $property;
+
+            if (!$comparator) {
+                $comparator = '==';
+            } elseif ($comparator === '=') {
+                $comparator = '==';
+            }
+
+            $query->where($propertyName, $comparator, $value);
         }
 
         $entries = [];
-        foreach ($this->repository
-                ->query()
-                ->where($property, $comparator, $value)
-                ->execute() as $entry) {
+        foreach ($query->execute() as $entry) {
             $entries[$entry->getId()] = get_object_vars($entry);
         }
 
@@ -127,20 +137,29 @@ final class FlywheelStore implements DataStore
      *
      * @throws NotFound
      */
-    public function findOneBy($property, $value, $comparator = '=')
+    public function findOneBy($property, $value = null, $comparator = '=')
     {
-        if ('=' === $comparator) {
-            $comparator = '==';
+        $properties = is_array($property) ?
+                $property :
+                [[ $property, $value, $comparator ]];
+
+        $query = $this->repository->query()->limit(1);
+        foreach ($properties as $property) {
+            @list($propertyName, $value, $comparator) = $property;
+
+            if (!$comparator) {
+                $comparator = '==';
+            } elseif ($comparator === '=') {
+                $comparator = '==';
+            }
+
+            $query->where($propertyName, $comparator, $value);
         }
 
-        $result = $this->repository
-                    ->query()
-                    ->where($property, $comparator, $value)
-                    ->limit(1)
-                    ->execute();
+        $result = $query->execute();
 
         if (!$result->count()) {
-            throw NotFound::fromProperty($property, $comparator, $value);
+            throw NotFound::fromProperty(isset($propertyName) ? $propertyName : '?', $comparator, $value);
         }
 
         return get_object_vars($result->first());
