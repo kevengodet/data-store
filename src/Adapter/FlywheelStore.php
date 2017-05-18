@@ -93,7 +93,7 @@ final class FlywheelStore implements DataStore
 
     /**
      *
-     * @param string $property
+     * @param string|array $property
      * @param mixed $value
      * @param string $comparator
      *
@@ -129,7 +129,7 @@ final class FlywheelStore implements DataStore
 
     /**
      *
-     * @param string $property
+     * @param string|array $property
      * @param mixed $value
      * @param string $comparator
      *

@@ -74,7 +74,7 @@ final class ArrayStore implements DataStore
 
     /**
      *
-     * @param string $property
+     * @param string|array $property
      * @param mixed $value
      * @param string $comparator
      *
@@ -108,7 +108,7 @@ final class ArrayStore implements DataStore
 
     /**
      *
-     * @param string $property
+     * @param string|array $property
      * @param mixed $value
      * @param string $comparator
      *

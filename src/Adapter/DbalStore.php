@@ -222,13 +222,13 @@ final class DbalStore implements DataStore
 
     /**
      *
-     * @param string $property
+     * @param string|array $property
      * @param mixed $value
      * @param string $comparator
      *
      * @return array
      */
-    public function findBy($property, $value, $comparator = '=')
+    public function findBy($property, $value = null, $comparator = '=')
     {
         $properties = is_array($property) ?
                 $property :
@@ -267,7 +267,7 @@ final class DbalStore implements DataStore
 
     /**
      *
-     * @param string $property
+     * @param string|array $property
      * @param mixed $value
      * @param string $comparator
      *
